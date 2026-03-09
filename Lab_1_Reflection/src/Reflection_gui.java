@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Reflection_gui {
-
-    public static void main(String[] args) {
-
+public class Reflection_gui
+{
+    public static void main(String[] args)
+    {
         JFrame frame = new JFrame("Reflection Analyzer");
         frame.setSize(700, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,11 +17,11 @@ public class Reflection_gui {
 
         JScrollPane scroll = new JScrollPane(output);
 
-        button.addActionListener(e -> {
-
+        button.addActionListener(e ->
+        {
             String className = input.getText();
 
-            String result = Reflection_tasks.analyzeClass(className);
+            String result = Reflection_tasks.analyze_class(className);
 
             output.setText(result);
         });
