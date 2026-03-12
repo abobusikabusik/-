@@ -1,10 +1,11 @@
 import java.util.Scanner;
 
+// додати зміни завдання 3 лаба 1 у гіт!!!
 public class Main
 {
     public static void main(String[] args)
     {
-        System.out.println("Перевірка завдання 1: \n");
+        System.out.println("Перевірка завдання 1:");
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Введіть повне ім'я класу: ");
@@ -15,11 +16,26 @@ public class Main
         System.out.println("\nОпис класу: ");
         System.out.println(result);
 
-        System.out.println("Перевірка завдання 2: \n");
+        System.out.println("\nПеревірка завдання 2:");
         Cat myCat = new Cat("Пуся", 4, "Біленька");
 
         Reflection_tasks.analyze_object_state(myCat);
         scanner.close();
+
+        System.out.println("\nПеревірка завдання 3:");
+        try
+        {
+            Object res = Reflection_tasks.invoke_method_by_name(myCat, "get_age_human_years");
+            System.out.println("Результат виклику: " + res);
+
+            System.out.println("Пробуємо викликати неіснуючий метод 'fly'...");
+            Reflection_tasks.invoke_method_by_name(myCat, "fly");
+
+        }
+        catch (FunctionNotFoundException e)
+        {
+            System.err.println(e.getMessage());
+        }
     }
 }
 

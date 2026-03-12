@@ -2,25 +2,23 @@ import java.lang.reflect.*;
 
 public class Reflection_tasks
 {
-    public static String analyze_class(String className)
+    public static String analyze_class(String class_name)
     {
         try
         {
-            Class<?> cls;
-            switch (className)
+            Class<?> cls = switch (class_name) 
             {
-                case "int": cls = int.class; break;
-                case "double": cls = double.class; break;
-                case "float": cls = float.class; break;
-                case "long": cls = long.class; break;
-                case "short": cls = short.class; break;
-                case "byte": cls = byte.class; break;
-                case "boolean": cls = boolean.class; break;
-                case "char": cls = char.class; break;
-                case "void": cls = void.class; break;
-                default:
-                    cls = Class.forName(className);
-            }
+                case "int" -> int.class;
+                case "double" -> double.class;
+                case "float" -> float.class;
+                case "long" -> long.class;
+                case "short" -> short.class;
+                case "byte" -> byte.class;
+                case "boolean" -> boolean.class;
+                case "char" -> char.class;
+                case "void" -> void.class;
+                default -> Class.forName(class_name);
+            };
 
             return analyze_class(cls);
 
@@ -91,7 +89,6 @@ public class Reflection_tasks
             sb.append(")\n");
         }
 
-
         sb.append("\nMethods:\n");
 
         for (Method m : cls.getDeclaredMethods())
@@ -129,10 +126,10 @@ public class Reflection_tasks
         }
 
         Class<?> cls = obj.getClass();
-        System.out.println("\nРеальний тип та стан об'єкта: ");
+        System.out.println("Реальний тип та стан об'єкта: ");
         System.out.println("Клас: " + cls.getName());
 
-        System.out.println("\nПоля та їх значення: ");
+        System.out.println("Поля та їх значення: ");
         Field[] fields = cls.getDeclaredFields();
         for (Field f : fields)
         {
@@ -143,11 +140,11 @@ public class Reflection_tasks
             }
             catch (IllegalAccessException e)
             {
-                System.out.println("  " + f.getName() + " = [Немає доступу]");
+                System.out.println("  " + f.getName() + " = [Немає доступу] :(");
             }
         }
 
-        System.out.println("\nДоступні відкриті методи (без параметрів): ");
+        System.out.println("Доступні відкриті методи (без параметрів): ");
         Method[] methods = cls.getDeclaredMethods();
         java.util.List<Method> callableMethods = new java.util.ArrayList<>();
 
@@ -168,7 +165,7 @@ public class Reflection_tasks
         }
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
-        System.out.print("\nВведіть номер методу, який хочете викликати (або 0 для виходу): ");
+        System.out.print("Введіть номер методу, який хочете викликати (або 0 для виходу): ");
         int choice = scanner.nextInt();
 
         if (choice > 0 && choice <= callableMethods.size())
@@ -196,6 +193,33 @@ public class Reflection_tasks
         else
         {
             System.out.println("Вихід з меню виклику.");
+        }
+    }
+
+    public static Object invoke_method_by_name(Object obj, String method_name, Object... params) throws FunctionNotFoundException
+    {
+        Class<?> cls = obj.getClass();
+        Class<?>[] paramTypes = new Class<?>[params.length];
+        
+        for (int i = 0; i < params.length; i++) 
+        {
+            paramTypes[i] = params[i].getClass();
+        }
+
+        try 
+        {
+            Method method = cls.getMethod(method_name, paramTypes);
+            System.out.println("Метод '" + method_name + "' знайдено успішно.");
+            return method.invoke(obj, params);
+
+        } 
+        catch (NoSuchMethodException e) 
+        {
+            throw new FunctionNotFoundException("Помилочка: Метод '" + method_name + "' не знайдено у класі " + cls.getSimpleName());
+        } 
+        catch (Exception e) 
+        {
+            return "Помилочка виконання: " + e.getMessage();
         }
     }
 }
