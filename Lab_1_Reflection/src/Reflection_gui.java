@@ -19,9 +19,9 @@ public class Reflection_gui
 
         button.addActionListener(e ->
         {
-            String className = input.getText();
+            String class_name = input.getText();
 
-            String result = Reflection_tasks.analyze_class(className);
+            String result = Reflection_tasks.analyze_class(class_name);
 
             output.setText(result);
         });
