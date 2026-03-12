@@ -3,9 +3,9 @@ import java.lang.reflect.Array;
 
 public class Main
 {
-    public static void main(String[] args)
+    static void main(String[] args)
     {
-        // main task
+        // first task
         System.out.println("Перевірка завдання 1:");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введіть повне ім'я класу: ");
@@ -14,13 +14,13 @@ public class Main
         System.out.println("\nОпис класу: ");
         System.out.println(result);
 
-        // first task
+        // second task
         System.out.println("\nПеревірка завдання 2:");
         Cat myCat = new Cat("Пуся", 4, "Біленька");
         Reflection_tasks.analyze_object_state(myCat);
         scanner.close();
 
-        // second task
+        // third task
         System.out.println("\nПеревірка завдання 3:");
         try
         {
@@ -36,7 +36,7 @@ public class Main
             System.err.println(e.getMessage());
         }
 
-        // third task
+        // fourth task
         System.out.println("\nПеревірка завдання 4:");
         // one-dimensional array
         Object int_array = Reflection_tasks.create_array(int.class, 3);
@@ -60,16 +60,19 @@ public class Main
         string_matrix = Reflection_tasks.resize_matrix(string_matrix, 3, 3);
         System.out.println("Після розширення матриці: " + Reflection_tasks.array_to_string(string_matrix));
 
-        // fourth task
-
+        // fifth task
+        System.out.println("\nПеревірка завдання 5:");
+        robot my_robot = new smart_robot();
+        robot proxy_robot = (robot) Reflection_tasks.create_proxy(my_robot, robot.class);
+        proxy_robot.work();
     }
 }
 
 class Cat
 {
     // private fields
-    private String name;
-    private int age;
+    private final String name;
+    private final int age;
     public String color;
 
     public Cat(String name, int age, String color)
@@ -101,5 +104,27 @@ class Cat
     public void eat(String food)
     {
         System.out.println("Кіт їсть " + food);
+    }
+}
+
+interface robot
+{
+    void work();
+}
+
+class smart_robot implements robot
+{
+    public void work()
+    {
+        System.out.println("Робот виконує якісь складні обчислення...");
+        try
+        {
+            // artificially slowing down the program for 500 milliseconds
+            Thread.sleep(500);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

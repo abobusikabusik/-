@@ -331,4 +331,14 @@ public class Reflection_tasks
             }
         }
     }
+
+    // creating a dynamic proxy (a fake object that looks and acts like the real one)
+    public static Object create_proxy(Object target, Class<?> interface_type)
+    {
+        return java.lang.reflect.Proxy.newProxyInstance(
+                target.getClass().getClassLoader(), // class loader of the real object
+                new Class<?>[]{interface_type}, // list of interfaces the proxy must implement
+                new Handler(target) // custom spy handler that will intercept calls
+        );
+    }
 }
