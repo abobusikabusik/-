@@ -96,7 +96,7 @@ public class Reflection_tasks
 
         sb.append("\nMethods:\n");
 
-        // getDeclaredMethods() gets all methods, including private ones
+        // getDeclaredMethods() gets all methods, including private ones + their params
         for (Method m : cls.getDeclaredMethods())
         {
             sb.append("  ")
