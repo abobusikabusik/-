@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-class Library_1 implements Serializable {
+class Library_1 implements Serializable
+{
     private List<Book> books = new ArrayList<>();
     private List<Reader> readers = new ArrayList<>();
     private List<Loan> loans = new ArrayList<>();
@@ -16,8 +17,9 @@ class Library_1 implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "\t\tmain_1.Library Current State\n" +
+    public String toString()
+    {
+        return "\t\tLibrary Current State\n" +
                 "Books in stock: " + books.size() + "\n" +
                 "Total readers: " + readers.size() + "\n" +
                 "Books currently borrowed: " + loans.size() + "\n" +

@@ -9,7 +9,7 @@ public class Main_1
     public static void main(String[] args)
     {
         // creating the library system
-        Library_1 myLibrary = new Library_1();
+        Library_1 my_library = new Library_1();
 
         // creating sample data
         Author king = new Author("Steven King");
@@ -19,22 +19,22 @@ public class Main_1
         Reader sofiia = new Reader("Sofia", 101);
 
         // adding data to the library
-        myLibrary.addBook(book1);
-        myLibrary.addBook(book2);
-        myLibrary.addReader(sofiia);
+        my_library.addBook(book1);
+        my_library.addBook(book2);
+        my_library.addReader(sofiia);
 
         // giving a book to a reader
-        myLibrary.takeBook(book1, sofiia);
+        my_library.takeBook(book1, sofiia);
 
         System.out.println("Before serialization:");
-        System.out.println(myLibrary);
+        System.out.println(my_library);
 
         String filename = "library_1.dat";
 
         // serialization process: saving the library object to a file
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename)))
         {
-            out.writeObject(myLibrary);
+            out.writeObject(my_library);
             System.out.println("\n[System successfully saved to file: " + filename + "]");
         }
         catch (IOException e)
@@ -43,10 +43,10 @@ public class Main_1
         }
 
         // deserialization process: restoring the library object from the file
-        Library_1 restoredLibrary = null;
+        Library_1 restored_library = null;
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename)))
         {
-            restoredLibrary = (Library_1) in.readObject();
+            restored_library = (Library_1) in.readObject();
             System.out.println("[System successfully restored from file]\n");
         }
         catch (IOException | ClassNotFoundException e)
@@ -55,9 +55,9 @@ public class Main_1
         }
 
         System.out.println("After deserialization:");
-        if (restoredLibrary != null)
+        if (restored_library != null)
         {
-            System.out.println(restoredLibrary);
+            System.out.println(restored_library);
         }
     }
 }
@@ -105,20 +105,20 @@ class Book implements Serializable
 class Reader implements Serializable
 {
     private String name;
-    private int cardNumber;
+    private int card_number;
 
     public Reader() {}
 
-    public Reader(String name, int cardNumber)
+    public Reader(String name, int card_number)
     {
         this.name = name;
-        this.cardNumber = cardNumber;
+        this.card_number = card_number;
     }
 
     public String getName() { return name; }
 
     @Override
-    public String toString() { return "Reader: " + name + " [№" + cardNumber + "]"; }
+    public String toString() { return "Reader: " + name + " [№" + card_number + "]"; }
 }
 
 class Loan implements Serializable

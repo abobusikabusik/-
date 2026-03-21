@@ -6,8 +6,8 @@ public class Main_2
 {
     static void main()
     {
-        // creating the library system for the second task
-        Library myLibrary = new Library();
+        // creating the Library_2 system for the second task
+        Library_2 my_Library_2 = new Library_2();
 
         // these objects belong to classes without 'Serializable' interface
         Author king = new Author("Stephen King");
@@ -16,23 +16,23 @@ public class Main_2
 
         Reader sofiia = new Reader("Sofia", 101);
 
-        // adding data to the library
-        myLibrary.addBook(book1);
-        myLibrary.addBook(book2);
-        myLibrary.addReader(sofiia);
+        // adding data to the Library_2
+        my_Library_2.addBook(book1);
+        my_Library_2.addBook(book2);
+        my_Library_2.addReader(sofiia);
 
         // giving a book to a reader
-        myLibrary.takeBook(book1, sofiia);
+        my_Library_2.takeBook(book1, sofiia);
 
         System.out.println("Before serialization");
-        System.out.println(myLibrary);
+        System.out.println(my_Library_2);
 
-        String filename = "library_2.dat";
+        String filename = "Library_2_2.dat";
 
         // saving the system using our custom writeObject logic
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename)))
         {
-            out.writeObject(myLibrary);
+            out.writeObject(my_Library_2);
             System.out.println("\n[Saved using manual writeObject method]");
         }
         catch (IOException e)
@@ -41,10 +41,10 @@ public class Main_2
         }
 
         // restoring the system using our custom readObject logic
-        Library restoredLibrary = null;
+        Library_2 restored_Library_2 = null;
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename)))
         {
-            restoredLibrary = (Library) in.readObject();
+            restored_Library_2 = (Library_2) in.readObject();
             System.out.println("[Restored using manual readObject method]\n");
         }
         catch (IOException | ClassNotFoundException e)
@@ -52,10 +52,10 @@ public class Main_2
             e.printStackTrace();
         }
 
-        System.out.println("After serialization");
-        if (restoredLibrary != null)
+        System.out.println("After deserialization");
+        if (restored_Library_2 != null)
         {
-            System.out.println(restoredLibrary);
+            System.out.println(restored_Library_2);
         }
     }
 }
@@ -97,33 +97,33 @@ class Book
 class Reader
 {
     private final String name;
-    private final int cardNumber;
+    private final int card_number;
 
-    public Reader(String name, int cardNumber)
+    public Reader(String name, int card_number)
     {
         this.name = name;
-        this.cardNumber = cardNumber;
+        this.card_number = card_number;
     }
 
     public String getName() { return name; }
 
-    public int getId() { return cardNumber; }
+    public int getId() { return card_number; }
 
     @Override
-    public String toString() { return "Reader: " + name + " [№" + cardNumber + "]"; }
+    public String toString() { return "Reader: " + name + " [№" + card_number + "]"; }
 }
 
 class Loan implements Serializable
 {
-    private String bookTitle;
-    private String readerName;
+    private String book_title;
+    private String reader_name;
 
     public Loan(Book book, Reader reader)
     {
-        this.bookTitle = book.getTitle();
-        this.readerName = reader.getName();
+        this.book_title = book.getTitle();
+        this.reader_name = reader.getName();
     }
 
     @Override
-    public String toString() { return readerName + " borrowed " + bookTitle; }
+    public String toString() { return reader_name + " borrowed " + book_title; }
 }
