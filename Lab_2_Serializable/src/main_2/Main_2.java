@@ -1,18 +1,16 @@
+package main_2;
+
 import java.io.*;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Main
+public class Main_2
 {
-    public static void main(String[] args)
+    static void main()
     {
-        // creating the library system
+        // creating the library system for the second task
         Library myLibrary = new Library();
 
-        // creating sample data
-        Author king = new Author("Steven King");
+        // these objects belong to classes without 'Serializable' interface
+        Author king = new Author("Stephen King");
         Book book1 = new Book("The Shining", king);
         Book book2 = new Book("It", king);
 
@@ -26,35 +24,35 @@ public class Main
         // giving a book to a reader
         myLibrary.takeBook(book1, sofiia);
 
-        System.out.println("Before serialization:");
+        System.out.println("Before serialization");
         System.out.println(myLibrary);
 
-        String filename = "library.dat";
+        String filename = "library_2.dat";
 
-        // serialization process: saving the library object to a file
+        // saving the system using our custom writeObject logic
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename)))
         {
             out.writeObject(myLibrary);
-            System.out.println("\n[System successfully saved to file: " + filename + "]");
+            System.out.println("\n[Saved using manual writeObject method]");
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
 
-        // deserialization process: restoring the library object from the file
+        // restoring the system using our custom readObject logic
         Library restoredLibrary = null;
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename)))
         {
             restoredLibrary = (Library) in.readObject();
-            System.out.println("[System successfully restored from file]\n");
+            System.out.println("[Restored using manual readObject method]\n");
         }
         catch (IOException | ClassNotFoundException e)
         {
             e.printStackTrace();
         }
 
-        System.out.println("After deserialization:");
+        System.out.println("After serialization");
         if (restoredLibrary != null)
         {
             System.out.println(restoredLibrary);
@@ -62,30 +60,24 @@ public class Main
     }
 }
 
-// all classes implement Serializable interface to allow byte-stream conversion
-class Author implements Serializable
+// not serializable
+class Author
 {
-    private String name;
-
-    public Author() {}
+    private final String name;
 
     public Author(String name) { this.name = name; }
 
     public String getName() { return name; }
 
-    public void setName(String name) { this.name = name; }
-
     @Override
     public String toString() { return "Author: " + name; }
 }
 
-// Клас Книга
-class Book implements Serializable
+// not serializable
+class Book
 {
-    private String title;
-    private Author author;
-
-    public Book() {}
+    private final String title;
+    private final Author author;
 
     public Book(String title, Author author)
     {
@@ -101,13 +93,11 @@ class Book implements Serializable
     public String toString() { return "Book '" + title + "' (" + author.getName() + ")"; }
 }
 
-// Клас Читач
-class Reader implements Serializable
+// not serializable
+class Reader
 {
-    private String name;
-    private int cardNumber;
-
-    public Reader() {}
+    private final String name;
+    private final int cardNumber;
 
     public Reader(String name, int cardNumber)
     {
@@ -117,21 +107,23 @@ class Reader implements Serializable
 
     public String getName() { return name; }
 
+    public int getId() { return cardNumber; }
+
     @Override
     public String toString() { return "Reader: " + name + " [№" + cardNumber + "]"; }
 }
 
 class Loan implements Serializable
 {
-    private Book book;
-    private Reader reader;
+    private String bookTitle;
+    private String readerName;
 
     public Loan(Book book, Reader reader)
     {
-        this.book = book;
-        this.reader = reader;
+        this.bookTitle = book.getTitle();
+        this.readerName = reader.getName();
     }
 
     @Override
-    public String toString() { return reader.getName() + " borrowed " + book.getTitle(); }
+    public String toString() { return readerName + " borrowed " + bookTitle; }
 }
