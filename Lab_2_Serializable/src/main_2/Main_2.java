@@ -27,7 +27,7 @@ public class Main_2
         System.out.println("Before serialization");
         System.out.println(my_Library_2);
 
-        String filename = "Library_2_2.dat";
+        String filename = "Library_2.dat";
 
         // saving the system using our custom writeObject logic
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename)))
