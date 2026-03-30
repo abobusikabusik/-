@@ -6,7 +6,7 @@ public class Main_3
 {
     public static void main(String[] args)
     {
-        // creating the Library_3 system for the second task
+        // creating the Library_3 system for the third task
         Library_3 my_Library_3 = new Library_3();
 
         // creating data
@@ -60,7 +60,7 @@ public class Main_3
     }
 }
 
-// all classes MUST implement Externalizable and have a public NO-ARG constructor
+// all classes implement Externalizable and have a public constructor
 class Author implements Externalizable
 {
     private String name;

@@ -9,6 +9,7 @@ import java.util.List;
 
 class Library_2 implements Serializable
 {
+    // transient - invisible for serialization
     private transient List<Book> books = new ArrayList<>();
     private transient List<Reader> readers = new ArrayList<>();
     private List<Loan> loans = new ArrayList<>();

@@ -4,7 +4,7 @@ import java.io.*;
 
 public class Main_2
 {
-    static void main()
+    public static void main(String[] args)
     {
         // creating the Library_2 system for the second task
         Library_2 my_Library_2 = new Library_2();
