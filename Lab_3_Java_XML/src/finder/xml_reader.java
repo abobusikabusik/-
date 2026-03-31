@@ -19,7 +19,7 @@ public class xml_reader
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(inputfile);
 
-            System.out.println("root: " + doc.getDocumentElement().getNodeName());
+            System.out.println("\nroot: " + doc.getDocumentElement().getNodeName() + "\n");
 
             NodeList list = doc.getElementsByTagName("baby");
 

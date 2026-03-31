@@ -8,15 +8,16 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+// task 3: finding all unique ethnicities
 public class ethnicity_finder
 {
     public static void main(String[] args)
     {
         try
         {
-            File inputfile = new File("Popular_Baby_Names_NY.xml");
+            File input_file = new File("Popular_Baby_Names_NY.xml");
             SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser saxparser = factory.newSAXParser();
+            SAXParser sax_parser = factory.newSAXParser();
 
             Set<String> ethnic_groups = new HashSet<>(); // no dublicates
 
@@ -24,7 +25,6 @@ public class ethnicity_finder
             {
                 boolean is_ethnicity = false; // if we're in tag <ethcty>
 
-                // tags
                 @Override
                 public void startElement(String uri, String localName, String qName, Attributes attributes)
                 {
@@ -60,7 +60,7 @@ public class ethnicity_finder
                 }
             };
 
-            saxparser.parse(inputfile, handler);
+            sax_parser.parse(input_file, handler);
 
             System.out.println("unique ethnic groups found: ");
             for (String group : ethnic_groups)

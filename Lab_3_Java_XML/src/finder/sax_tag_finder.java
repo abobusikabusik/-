@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-// class for finding all unique tags in the xml file
+// task 1: class for finding all unique tags in the xml file
 public class sax_tag_finder
 {
     public static void main(String[] args)
@@ -26,18 +26,49 @@ public class sax_tag_finder
 
             DefaultHandler handler = new DefaultHandler()
             {
-                int count = 0; // how much tags
+                int elements_printed = 0;
+                boolean print_mode = true;
 
                 @Override
                 public void startElement(String uri, String localName, String qName, Attributes attributes)
                 {
                     unique_tags.add(qName);
 
-                    // print first 50 tags to see the structure
-                    if (count < 50)
+                    if (print_mode)
                     {
-                        System.out.println("tag found: <" + qName + ">");
-                        count++;
+                        System.out.println("<" + qName + ">");
+                        elements_printed++;
+
+                        // stopping printing after 30 tag
+                        if (elements_printed > 30)
+                        {
+                            print_mode = false;
+                            System.out.println("\n... printing stopped ...\n");
+                        }
+                    }
+                }
+
+                @Override
+                public void characters(char[] ch, int start, int length)
+                {
+                    // printing text (inside tags)
+                    if (print_mode)
+                    {
+                        String data = new String(ch, start, length).trim();
+                        if (!data.isEmpty())
+                        {
+                            System.out.println(data);
+                        }
+                    }
+                }
+
+                @Override
+                public void endElement(String uri, String localName, String qName)
+                {
+                    // printing closing tag
+                    if (print_mode)
+                    {
+                        System.out.println("</" + qName + ">");
                     }
                 }
             };

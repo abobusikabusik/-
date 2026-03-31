@@ -7,7 +7,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 
-// class to validate xml against xsd schema
+// task 2: class to validate xml using xsd schema
 public class xml_validator
 {
     public static void main(String[] args)
@@ -17,7 +17,6 @@ public class xml_validator
             String xml_path = "Popular_Baby_Names_NY.xml";
             String xsd_path = "src/baby_scheme.xsd";
 
-            // standard java classes with correct casing
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new File(xsd_path));
             Validator validator = schema.newValidator();

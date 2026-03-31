@@ -1,11 +1,12 @@
 package finder;
 
 // class to store baby data
-public class baby_name {
-    private String name;
-    private String gender;
-    private int count;
-    private int rank;
+public class baby_name
+{
+    private final String name;
+    private final String gender;
+    private final int count;
+    private final int rank;
 
     public baby_name(String name, String gender, int count, int rank)
     {

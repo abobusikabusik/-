@@ -8,17 +8,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Comparator;
 
-// class to read xml, filter, sort and create new xml
+// task 4: class to read xml, filter, sort and create new xml
 public class xml_processor
 {
     public static void main(String[] args)
@@ -26,6 +27,8 @@ public class xml_processor
         try
         {
             List<baby_name> names_list = new ArrayList<>();
+            Set<String> seen_names = new HashSet<>();
+            int target_amount = 15;
             String target_ethnicity = "hispanic";
 
             // 1. sax parsing
@@ -63,12 +66,22 @@ public class xml_processor
                 @Override
                 public void endElement(String uri, String localName, String qName)
                 {
-                    // checking if read all info about child
-                    if (qName.equalsIgnoreCase("row") && ethnicity != null && ethnicity.equals(target_ethnicity))
-                    {
-                        names_list.add(new baby_name(name, gender, count, rank));
+                    if (qName.equalsIgnoreCase("row") && ethnicity != null && ethnicity.equals(target_ethnicity)) {
+
+                        // ДОДАЛИ ПЕРЕВІРКУ: чи є вже таке ім'я в нашому Set? (!seen_names.contains(name))
+                        if (rank <= target_amount && !seen_names.contains(name))
+                        {
+                            names_list.add(new baby_name(name, gender, count, rank));
+                            seen_names.add(name); // запам'ятовуємо, що це ім'я вже взяли
+                        }
+
                         ethnicity = null;
+                        name = null;
+                        gender = null;
+                        count = 0;
+                        rank = 0;
                     }
+                    current_tag = "";
                 }
             };
 
@@ -76,6 +89,14 @@ public class xml_processor
 
             // 2. sorting by rank
             names_list.sort(Comparator.comparingInt(baby_name::getRank));
+
+            System.out.println("\ntop " + target_amount + " names for a group: " + target_ethnicity.toUpperCase() + "\n");
+            for (int i = 0; i < Math.min(target_amount, names_list.size()); i++)
+            {
+                baby_name b = names_list.get(i);
+                System.out.println("rank: " + b.getRank() + " | name: " + b.getName() + " (" + b.getGender() + ") | amount: " + b.getCount());
+            }
+            System.out.println("--------------------------------------------------\n");
 
             // 3. dom creation for top 15 names
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -85,7 +106,7 @@ public class xml_processor
             Element root = doc.createElement("popular_names");
             doc.appendChild(root);
 
-            for (int i = 0; i < Math.min(15, names_list.size()); i++)
+            for (int i = 0; i < Math.min(target_amount, names_list.size()); i++)
             {
                 baby_name b = names_list.get(i);
                 Element row = doc.createElement("baby");
