@@ -62,7 +62,7 @@ public class ethnicity_finder
 
             sax_parser.parse(input_file, handler);
 
-            System.out.println("unique ethnic groups found: ");
+            System.out.println("\nunique ethnic groups found: \n");
             for (String group : ethnic_groups)
             {
                 System.out.println(group);
