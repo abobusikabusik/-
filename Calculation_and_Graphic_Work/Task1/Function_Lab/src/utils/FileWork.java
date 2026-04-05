@@ -1,3 +1,4 @@
+// task 1
 package utils;
 
 import java.io.*;
@@ -5,6 +6,7 @@ import java.util.ArrayList;
 
 public class FileWork
 {
+    // save results (x, f(x), f'(x)) to a tab-separated file
     public static void save_to_file(String filename, ArrayList<Double> x_values, ArrayList<Double> f_values, ArrayList<Double> derivative_values)
     {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename)))
@@ -22,6 +24,7 @@ public class FileWork
         }
     }
 
+    // reads x and y values from a space/tab separated text file
     public static void read_from_file(String filename, ArrayList<Double> x_values, ArrayList<Double> y_values)
     {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename)))
@@ -30,7 +33,7 @@ public class FileWork
             while ((line = reader.readLine()) != null)
             {
                 String[] parts = line.trim().split("\\s+");
-                if (parts.length >= 2)
+                if (parts.length >= 2) // at least 2 numbers
                 {
                     x_values.add(Double.parseDouble(parts[0]));
                     y_values.add(Double.parseDouble(parts[1]));

@@ -6,6 +6,7 @@ import utils.FileWork;
 
 import java.util.ArrayList;
 
+// Task 1
 public class Main
 {
     public static void main(String[] args)
@@ -51,6 +52,7 @@ public class Main
         System.out.println("фсе");
     }
 
+    // local helper method for calculating and saving results
     private static void compute_and_save(String filename, Function function, double x_start, double x_end, double step, double epsilon)
     {
         ArrayList<Double> x_values = new ArrayList<>();

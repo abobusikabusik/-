@@ -1,8 +1,10 @@
+// task 1, 2
 package functions;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+// represents a function defined by a table of (x, y) points
 public class TabularFunction implements Function
 {
     private final ArrayList<Double> x_values;
@@ -12,7 +14,7 @@ public class TabularFunction implements Function
     {
         if (x_values.size() != y_values.size())
         {
-            throw new IllegalArgumentException("Масивчики повинні мати однаковий розмір бро");
+            throw new IllegalArgumentException("масивчики повинні мати однаковий розмір бро");
         }
 
         this.x_values = new ArrayList<>(x_values);
@@ -21,30 +23,27 @@ public class TabularFunction implements Function
 
     public double calculate(double x)
     {
-        int index = Collections.binarySearch(x_values, x);
+        // if x is below the first point - return the first y
+        if (x <= x_values.get(0)) return y_values.get(0);
 
-        if (index >= 0)
+        // if x is above the last point - return the last y
+        if (x >= x_values.get(x_values.size() - 1)) return y_values.get(y_values.size() - 1);
+
+        // iterate through points to find the segment containing x
+        for (int i = 0; i < x_values.size() - 1; i++)
         {
-            return y_values.get(index);
+            double x1 = x_values.get(i);
+            double x2 = x_values.get(i + 1);
+
+            if (x >= x1 && x <= x2)
+            {
+                double y1 = y_values.get(i);
+                double y2 = y_values.get(i + 1);
+
+                // linear interpolation formula (straight line between points)
+                return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+            }
         }
-
-        int insert_p = -index - 1;
-
-        if (insert_p == 0)
-        {
-            return y_values.get(0);
-        }
-
-        if (insert_p >= x_values.size())
-        {
-            return y_values.get(x_values.size() - 1);
-        }
-
-        double x1 = x_values.get(insert_p - 1);
-        double x2 = x_values.get(insert_p);
-        double y1 = y_values.get(insert_p - 1);
-        double y2 = y_values.get(insert_p);
-
-        return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+        return 0;
     }
 }

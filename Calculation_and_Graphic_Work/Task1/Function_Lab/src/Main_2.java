@@ -7,6 +7,7 @@ import utils.FileWork_2;
 import utils.FunctionProcessor;
 import java.util.ArrayList;
 
+// Task 2
 public class Main_2
 {
     public static void main(String[] args)
@@ -18,6 +19,7 @@ public class Main_2
 
         System.out.println("\tЛаба 1 - Рефакторинг (Завдання 2)\n");
 
+        // initialize components
         Derivative_method numericalDerivative = new Numerical_derivative(epsilon);
         FileWork_2 fileWork = new FileWork_2();
         FunctionProcessor processor = new FunctionProcessor(numericalDerivative, fileWork);
