@@ -6,6 +6,7 @@ import calculus.Derivative_method;
 import java.util.ArrayList;
 import java.util.List;
 
+// manager
 public class FunctionProcessor
 {
     private final Derivative_method derivativeMethod;

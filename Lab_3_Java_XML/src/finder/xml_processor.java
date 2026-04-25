@@ -32,8 +32,8 @@ public class xml_processor
             String target_ethnicity = "hispanic";
 
             // 1. sax parsing
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser sax_parser = factory.newSAXParser();
+            SAXParserFactory factory = SAXParserFactory.newInstance(); // factory for parsers
+            SAXParser sax_parser = factory.newSAXParser(); // parser itself
 
             DefaultHandler handler = new DefaultHandler()
             {
@@ -68,11 +68,10 @@ public class xml_processor
                 {
                     if (qName.equalsIgnoreCase("row") && ethnicity != null && ethnicity.equals(target_ethnicity)) {
 
-                        // ДОДАЛИ ПЕРЕВІРКУ: чи є вже таке ім'я в нашому Set? (!seen_names.contains(name))
                         if (rank <= target_amount && !seen_names.contains(name))
                         {
                             names_list.add(new baby_name(name, gender, count, rank));
-                            seen_names.add(name); // запам'ятовуємо, що це ім'я вже взяли
+                            seen_names.add(name);
                         }
 
                         ethnicity = null;
@@ -99,11 +98,11 @@ public class xml_processor
             System.out.println("--------------------------------------------------\n");
 
             // 3. dom creation for top 15 names
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); // factory for document
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.newDocument();
+            Document doc = db.newDocument(); // tree of objects
 
-            Element root = doc.createElement("popular_names");
+            Element root = doc.createElement("popular_names"); // main root
             doc.appendChild(root);
 
             for (int i = 0; i < Math.min(target_amount, names_list.size()); i++)
@@ -130,8 +129,8 @@ public class xml_processor
                 root.appendChild(row);
             }
 
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.transform(new DOMSource(doc), new StreamResult(new File("top_names.xml")));
+            Transformer transformer = TransformerFactory.newInstance().newTransformer(); // from tree to text to xml file
+            transformer.transform(new DOMSource(doc), new StreamResult(new File("top_names.xml"))); // writes tree to file
 
             System.out.println("new xml created!");
 
