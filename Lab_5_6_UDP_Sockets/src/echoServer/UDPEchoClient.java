@@ -5,15 +5,19 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class UDPEchoClient {
+public class UDPEchoClient
+{
     public final static int PORT = 7;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         String hostname = "localhost";
-        if (args.length > 0) {
+        if (args.length > 0)
+        {
             hostname = args[0];
         }
-        try {
+        try
+        {
             InetAddress ia = InetAddress.getByName(hostname);
             DatagramSocket socket = new DatagramSocket();
             System.out.println("Клієнт підключено. Введіть текст (введіть '.' для виходу):");
@@ -22,7 +26,9 @@ public class UDPEchoClient {
             sender.start();
             Thread receiver = new ReceiverThread(socket);
             receiver.start();
-        } catch (UnknownHostException | SocketException ex) {
+        }
+        catch (UnknownHostException | SocketException ex)
+        {
             System.err.println(ex);
         }
     }

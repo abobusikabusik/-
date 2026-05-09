@@ -7,28 +7,34 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class SenderThread extends Thread {
+public class SenderThread extends Thread
+{
     private InetAddress server;
     private int port;
     private DatagramSocket socket;
     private volatile boolean stopped = false;
 
-    public SenderThread(DatagramSocket socket, InetAddress address, int port) {
+    public SenderThread(DatagramSocket socket, InetAddress address, int port)
+    {
         this.server = address;
         this.port = port;
         this.socket = socket;
         this.socket.connect(server, port);
     }
 
-    public void halt() {
+    public void halt()
+    {
         this.stopped = true;
     }
 
     @Override
-    public void run() {
-        try {
+    public void run()
+    {
+        try
+        {
             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
-            while (true) {
+            while (true)
+            {
                 if (stopped) return;
                 String theLine = userInput.readLine();
                 if (theLine.equals(".")) break;
@@ -38,7 +44,9 @@ public class SenderThread extends Thread {
                 socket.send(output);
                 Thread.yield();
             }
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             System.err.println(ex);
         }
     }

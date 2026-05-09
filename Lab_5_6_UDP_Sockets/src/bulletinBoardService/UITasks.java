@@ -1,6 +1,7 @@
 package bulletinBoardService;
 
-public interface UITasks {
+public interface UITasks
+{
     String getMessage();
     void setText(String txt);
 }

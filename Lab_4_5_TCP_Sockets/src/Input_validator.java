@@ -50,6 +50,7 @@ public class Input_validator
         }
     }
 
+    // string
     public static String read_string(Scanner scanner, String prompt)
     {
         while (true)

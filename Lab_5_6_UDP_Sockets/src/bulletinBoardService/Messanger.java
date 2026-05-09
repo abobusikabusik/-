@@ -1,6 +1,7 @@
 package bulletinBoardService;
 
-public interface Messanger {
+public interface Messanger
+{
     void start();
     void stop();
     void send();

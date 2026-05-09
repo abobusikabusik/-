@@ -6,48 +6,63 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public abstract class UDPServer implements Runnable {
+public abstract class UDPServer implements Runnable
+{
     private final int bufferSize;
     private final int port;
     private volatile boolean isShutDown = false;
 
-    public UDPServer(int port, int bufferSize) {
+    public UDPServer(int port, int bufferSize)
+    {
         this.bufferSize = bufferSize;
         this.port = port;
     }
 
-    public UDPServer(int port) {
+    public UDPServer(int port)
+    {
         this(port, 8192);
     }
 
-    public UDPServer() {
+    public UDPServer()
+    {
         this(12345, 8192);
     }
 
-    public void shutDown() {
+    public void shutDown()
+    {
         this.isShutDown = true;
     }
 
     public abstract void respond(DatagramSocket socket, DatagramPacket request) throws IOException;
 
     @Override
-    public void run() {
+    public void run()
+    {
         byte[] buffer = new byte[bufferSize];
-        try (DatagramSocket socket = new DatagramSocket(port)) {
+        try (DatagramSocket socket = new DatagramSocket(port))
+        {
             socket.setSoTimeout(10000); // Таймаут 10 секунд
-            while (true) {
+            while (true)
+            {
                 if (isShutDown) return;
                 DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
-                try {
+                try
+                {
                     socket.receive(incoming);
                     this.respond(socket, incoming);
-                } catch (SocketTimeoutException ex) {
+                }
+                catch (SocketTimeoutException ex)
+                {
                     if (isShutDown) return;
                 }
             }
-        } catch (SocketException ex) {
+        }
+        catch (SocketException ex)
+        {
             System.err.println("Could not bind to port: " + port + "\n" + ex);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             System.err.println(ex.getMessage() + "\n" + ex);
         }
     }
