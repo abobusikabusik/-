@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+// custom table model to link datasheet with jtable
 public class DataSheetTableModel extends AbstractTableModel
 {
     private static final long serialVersionUID = 1L;
@@ -13,7 +14,6 @@ public class DataSheetTableModel extends AbstractTableModel
     private DataSheet dataSheet = null;
     private String[] columnNames = {"Date", "X Value", "Y Value"};
 
-    // Список "вух", які слухають нашу таблицю
     private ArrayList<DataSheetChangeListener> listenerList = new ArrayList<>();
     private DataSheetChangeEvent event = new DataSheetChangeEvent(this);
 
@@ -26,7 +26,7 @@ public class DataSheetTableModel extends AbstractTableModel
     {
         this.dataSheet = dataSheet;
         rowCount = this.dataSheet.size();
-        fireDataSheetChange(); // Кричимо, що дані завантажились
+        fireDataSheetChange();
     }
 
     @Override
@@ -53,6 +53,7 @@ public class DataSheetTableModel extends AbstractTableModel
         return null;
     }
 
+    // update internal data when user edits table cell
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex)
     {
@@ -75,7 +76,7 @@ public class DataSheetTableModel extends AbstractTableModel
                     d = Double.parseDouble(value.toString());
                     dataSheet.getDataItem(rowIndex).setY(d);
                 }
-                fireDataSheetChange(); // Кричимо, що юзер змінив цифру!
+                fireDataSheetChange(); // notify all listeners (like graph) to redraw
             }
         }
         catch (Exception ex)
@@ -89,7 +90,6 @@ public class DataSheetTableModel extends AbstractTableModel
         if (rowCount > 0) this.rowCount = rowCount;
     }
 
-    // --- Магія подій (додаємо, видаляємо і сповіщаємо слухачів) ---
     public void addDataSheetChangeListener(DataSheetChangeListener l)
     {
         listenerList.add(l);
@@ -100,6 +100,7 @@ public class DataSheetTableModel extends AbstractTableModel
         listenerList.remove(l);
     }
 
+    // send event to registered listeners
     protected void fireDataSheetChange()
     {
         for (DataSheetChangeListener listener : listenerList)

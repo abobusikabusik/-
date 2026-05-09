@@ -16,12 +16,14 @@ public class UDPEchoServer extends UDPServer
     @Override
     public void respond(DatagramSocket socket, DatagramPacket request) throws IOException
     {
+        // create a copy of the client's packet and send it back (echo)
         DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(), request.getPort());
         socket.send(reply);
     }
 
     public static void main(String[] args)
     {
+        // start server in a background thread
         UDPServer server = new UDPEchoServer();
         Thread t = new Thread(server);
         t.start();
@@ -29,7 +31,8 @@ public class UDPEchoServer extends UDPServer
         System.out.println("Start echo-server on port " + DEFAULT_PORT + "...");
         try
         {
-            Thread.sleep(20000); // Сервер працюватиме 20 секунд
+            // auto-shutdown server after 20 seconds
+            Thread.sleep(20000);
         }
         catch (InterruptedException e)
         {

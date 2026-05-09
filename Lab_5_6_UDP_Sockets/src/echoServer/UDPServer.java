@@ -41,13 +41,14 @@ public abstract class UDPServer implements Runnable
         byte[] buffer = new byte[bufferSize];
         try (DatagramSocket socket = new DatagramSocket(port))
         {
-            socket.setSoTimeout(10000); // Таймаут 10 секунд
+            socket.setSoTimeout(10000); // timeout 10 sec
             while (true)
             {
                 if (isShutDown) return;
                 DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
                 try
                 {
+                    // receive packet from client
                     socket.receive(incoming);
                     this.respond(socket, incoming);
                 }

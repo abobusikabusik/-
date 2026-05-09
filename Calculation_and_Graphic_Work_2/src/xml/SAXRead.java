@@ -9,6 +9,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class SAXRead
 {
+    // parse xml file and convert to datasheet object
     public static DataSheet XMLReadData(String fileName)
     {
         DataSheet dataSheet = new DataSheet();

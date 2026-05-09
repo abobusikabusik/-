@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+// visual component to render datasheet points
 public class DataSheetGraph extends JPanel
 {
     private static final long serialVersionUID = 1L;
@@ -30,7 +31,6 @@ public class DataSheetGraph extends JPanel
         this.setSize(300, 400);
     }
 
-    // --- Гетери та Сетери за правилами JavaBeans ---
     public DataSheet getDataSheet() { return dataSheet; }
     public void setDataSheet(DataSheet dataSheet)
     {
@@ -66,7 +66,7 @@ public class DataSheetGraph extends JPanel
         repaint();
     }
 
-    // --- Допоміжні методи для пошуку меж графіка ---
+    // helper methods to calculate graph bounds
     private double minX()
     {
         double result = 0;
@@ -115,7 +115,7 @@ public class DataSheetGraph extends JPanel
         return result;
     }
 
-    // --- Рендеринг ---
+    // rendering logic
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -135,7 +135,7 @@ public class DataSheetGraph extends JPanel
         yMin = minY() - deltaY;
         yMax = maxY() + deltaY;
 
-        // Коефіцієнти масштабування та положення початку координат
+        // calculate scaling factors and origin position
         double xScale = width / (xMax - xMin);
         double yScale = height / (yMax - yMin);
         double x0 = -xMin * xScale;
@@ -148,12 +148,12 @@ public class DataSheetGraph extends JPanel
         Stroke oldStroke = gr.getStroke();
         Font oldFont = gr.getFont();
 
-        // Сітка
+        // draw grid
         float[] dashPattern = {10, 10};
         gr.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0));
         gr.setFont(new Font("Serif", Font.BOLD, 14));
 
-        // Сітка для осі X
+        // x-axis grid
         double xStep = 1;
         if ((xMax - xMin) > 100) xStep = 20;
         else if ((xMax - xMin) > 20) xStep = 5;
@@ -175,7 +175,7 @@ public class DataSheetGraph extends JPanel
             gr.drawString(Math.round(dx / xStep) * xStep + "", (int) x + 2, 10);
         }
 
-        // Сітка для осі Y
+        // y-axis grid
         double yStep = 1;
         if ((yMax - yMin) > 100) yStep = 20;
         else if ((yMax - yMin) > 20) yStep = 5;
@@ -197,7 +197,7 @@ public class DataSheetGraph extends JPanel
             gr.drawString(Math.round(dy / yStep) * yStep + "", 2, (int) y - 2);
         }
 
-        // Осі координат
+        // draw coordinate axes
         gr.setPaint(Color.BLACK);
         gr.setStroke(new BasicStroke(3.0f));
         gr.draw(new Line2D.Double(x0, 0, x0, height));
@@ -205,11 +205,12 @@ public class DataSheetGraph extends JPanel
         gr.drawString("X", (int) width - 15, (int) y0 - 5);
         gr.drawString("Y", (int) x0 + 5, 15);
 
-        // Малювання самих точок/ліній графіка
+        // draw points or lines based on isconnected flag
         if (dataSheet != null && dataSheet.size() > 0)
         {
             if (!isConnected)
             {
+                // draw isolated dots
                 for (int i = 0; i < dataSheet.size(); i++)
                 {
                     double x = x0 + (dataSheet.getDataItem(i).getX() * xScale);
@@ -222,6 +223,7 @@ public class DataSheetGraph extends JPanel
             }
             else
             {
+                // draw lines connecting the dots
                 gr.setPaint(color);
                 gr.setStroke(new BasicStroke(2.0f));
                 double xOld = x0 + dataSheet.getDataItem(0).getX() * xScale;
@@ -237,7 +239,7 @@ public class DataSheetGraph extends JPanel
             }
         }
 
-        // Відновлюємо вихідні налаштування пензлика
+        // restore original graphics settings
         gr.setPaint(oldColor);
         gr.setStroke(oldStroke);
         gr.setFont(oldFont);

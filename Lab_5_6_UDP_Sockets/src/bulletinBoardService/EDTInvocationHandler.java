@@ -17,6 +17,7 @@ public class EDTInvocationHandler implements InvocationHandler
     @Override
     public Object invoke(Object proxy, final Method method, final Object[] args) throws Throwable
     {
+        // proxy to safely update gui from background network threads
         if (SwingUtilities.isEventDispatchThread())
         {
             invocationResult = method.invoke(ui, args);
@@ -38,6 +39,7 @@ public class EDTInvocationHandler implements InvocationHandler
                     }
                 }
             };
+            // send task to gui thread queue
             SwingUtilities.invokeAndWait(shell);
         }
         return invocationResult;

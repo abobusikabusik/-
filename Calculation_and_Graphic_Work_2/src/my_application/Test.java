@@ -24,44 +24,44 @@ public class Test extends JFrame
 
     public Test()
     {
-        // Налаштування головного вікна
+        // setup main application window
         setTitle("Розрахунково-графічна робота №2 (JavaBeans)");
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(new BorderLayout());
 
-        // Щоб файли шукалися в поточній папці проєкту
+        // default file chooser to project directory
         fileChooser.setCurrentDirectory(new File("."));
 
-        // Створюємо початкове порожнє сховище даних з одним рядком
+        // initialize empty datasheet with one row
         dataSheet = new DataSheet();
         dataSheet.addDataItem(new Data());
 
-        // 1. Створюємо і налаштовуємо Графік (Східна частина)
+        // create and configure graph component (east)
         dataSheetGraph = new DataSheetGraph();
         dataSheetGraph.setPreferredSize(new Dimension(400, 500));
         dataSheetGraph.setDataSheet(dataSheet); // Передаємо дані графіку
         add(dataSheetGraph, BorderLayout.EAST);
 
-        // 2. Створюємо і налаштовуємо Таблицю (Західна частина)
+        // create and configure table component (west)
         dataSheetTable = new DataSheetTable();
         dataSheetTable.setPreferredSize(new Dimension(350, 500));
-        dataSheetTable.getTableModel().setDataSheet(dataSheet); // Передаємо дані таблиці
+        dataSheetTable.getTableModel().setDataSheet(dataSheet);
         add(dataSheetTable, BorderLayout.WEST);
 
-        // ГОЛОВНА МАГІЯ: Зв'язуємо таблицю і графік через нашу Подію!
+        // link table model events to graph redraw
         dataSheetTable.getTableModel().addDataSheetChangeListener(new DataSheetChangeListener() {
             @Override
             public void dataChanged(DataSheetChangeEvent e)
             {
-                // Коли в таблиці щось змінилось - перемальовуємо графік
+                // redraw graph when table data changes
                 dataSheetGraph.revalidate();
                 dataSheetGraph.repaint();
             }
         });
 
-        // 3. Створюємо панель з кнопками управління (Південна частина)
+        // create control panel with buttons (south)
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton readButton = new JButton("Open XML");
         JButton saveButton = new JButton("Save XML");
@@ -74,31 +74,29 @@ public class Test extends JFrame
         panelButtons.add(exitButton);
         add(panelButtons, BorderLayout.SOUTH);
 
-        // --- ОБРОБНИКИ КНОПОК ---
-
-        // Кнопка Exit
+        // exit button action
         exitButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent arg0)
             {
-                dispose(); // Закриває вікно
+                dispose(); // close window
             }
         });
 
-        // Кнопка Clear (Очистити все)
+        // clear button action
         clearButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 dataSheet = new DataSheet();
-                dataSheet.addDataItem(new Data()); // Додаємо 1 пустий рядок
+                dataSheet.addDataItem(new Data()); // add 1 empty row
                 dataSheetTable.getTableModel().setDataSheet(dataSheet);
                 dataSheetTable.revalidate();
                 dataSheetGraph.setDataSheet(dataSheet);
             }
         });
 
-        // Кнопка Save XML (Зберегти)
+        // save xml button action
         saveButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -107,7 +105,7 @@ public class Test extends JFrame
                     String fileName = fileChooser.getSelectedFile().getPath();
                     if (!fileName.endsWith(".xml"))
                     {
-                        fileName += ".xml"; // Додаємо розширення, якщо юзер забув
+                        fileName += ".xml"; // add extension if missing
                     }
                     DataSheetToXML.saveXMLDoc(DataSheetToXML.createDataSheetDOM(dataSheet), fileName);
                     JOptionPane.showMessageDialog(null,
@@ -118,7 +116,7 @@ public class Test extends JFrame
             }
         });
 
-        // Кнопка Open XML (Відкрити)
+        // open xml button action
         readButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -126,9 +124,9 @@ public class Test extends JFrame
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(null))
                 {
                     String fileName = fileChooser.getSelectedFile().getPath();
-                    dataSheet = SAXRead.XMLReadData(fileName); // Читаємо файл
+                    dataSheet = SAXRead.XMLReadData(fileName); // read file
 
-                    // Оновлюємо таблицю і графік новими даними
+                    // update ui components with new data
                     dataSheetTable.getTableModel().setDataSheet(dataSheet);
                     dataSheetTable.revalidate();
                     dataSheetGraph.setDataSheet(dataSheet);
@@ -139,14 +137,14 @@ public class Test extends JFrame
 
     public static void main(String[] args)
     {
-        // Запускаємо нашу красу!
+        // start application
         SwingUtilities.invokeLater(new Runnable()
         {
             @Override
             public void run()
             {
                 Test frame = new Test();
-                frame.setLocationRelativeTo(null); // Центруємо вікно на екрані
+                frame.setLocationRelativeTo(null); // center window on screen
                 frame.setVisible(true);
             }
         });
